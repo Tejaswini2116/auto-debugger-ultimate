@@ -250,7 +250,10 @@ style="width:100%;padding:8px;margin-top:5px;border-radius:8px;border:none;">
 function login(){
 let email=document.getElementById("loginEmail").value;
 let password=document.getElementById("loginPassword").value;
-if(email.includes("@") && password.length>=6){
+if(
+email==="admin@gmail.com" &&
+password==="admin123"
+){
 document.getElementById("loginPage").style.display="none";
 document.getElementById("mainApp").style.display="block";
 }else{
@@ -267,7 +270,9 @@ const languageQuizzes={
 c:[
 {q:"Which symbol ends a C statement?",o:[";",":"],a:";"},
 {q:"Which function prints output in C?",o:["printf","print"],a:"printf"},
-{q:"Which keyword defines entry function?",o:["main","start"],a:"main"}
+{q:"Which keyword defines entry function?",o:["main","start"],a:"main"},
+{q:"Which symbol starts a block?",o:["{","("],a:"{"},
+{q:"Which header is used for printf?",o:["stdio.h","math.h"],a:"stdio.h"}
 ],
 java:[
 {q:"Which method is entry point in Java?",o:["main","start"],a:"main"},
@@ -369,16 +374,29 @@ document.getElementById("points").innerText=points;
 updateLevel();
 updateAccuracy();
 detectAI(codeInput.value);
+let badge="";
+
+if(points>=50) badge="🥉 Beginner Debugger";
+if(points>=150) badge="🥈 Error Hunter";
+if(points>=300) badge="🥇 Master Debugger";
+
+document.getElementById("badges").innerHTML=badge;
 }
 
 function updateLevel(){
-if(points>=50) document.getElementById("level").innerText="Intermediate";
-if(points>=100) document.getElementById("level").innerText="Advanced";
+if(points>=50)
+document.getElementById("level").innerText="Intermediate";
 
+if(points>=150)
+document.getElementById("level").innerText="Advanced";
+
+if(points>=300)
+document.getElementById("level").innerText="Expert";
+  
 let progress=points%50;
 document.getElementById("progressBar").style.width=(progress/50)*100+"%";
 
-if(points>=1000 && !quizUnlocked){
+if(points>=100 && !quizUnlocked){
 quizUnlocked=true;
 startQuiz();
 }
@@ -461,8 +479,17 @@ displayLeaderboard();
 
 /* CHATBOT */
 function toggleChat(){
+
 let chat=document.getElementById("chatWindow");
-chat.style.display = chat.style.display==="none" ? "block" : "none";
+
+if(
+chat.style.display==="none" ||
+chat.style.display===""){
+chat.style.display="block";
+}else{
+chat.style.display="none";
+}
+
 }
 
 function sendMessage(){
@@ -471,15 +498,56 @@ let chatBox=document.getElementById("chatBox");
 let response="";
 
 chatBox.innerHTML+="<div>> "+input+"</div>";
+else if(input.includes("loop"))
+response="A loop repeatedly executes a block of code until a condition is met.";
 
-if(input.includes("semicolon"))
-response="In C and Java, statements must end with ';'.";
-else if(input.includes("python"))
-response="Python uses ':' and indentation instead of curly braces.";
-else if(input.includes("comparison"))
-response="Use '==' for comparison. '=' is assignment.";
+else if(input.includes("array"))
+response="An array stores multiple values in a single variable.";
+
+else if(input.includes("function"))
+response="A function is a reusable block of code that performs a specific task.";
+
+else if(input.includes("variable"))
+response="A variable is used to store data values in a program.";
+
+else if(input.includes("java"))
+response="Java is an object-oriented programming language used for web, mobile, and enterprise applications.";
+
+else if(input.includes("c language") || input==="c")
+response="C is a procedural programming language and the foundation for many modern languages.";
+
+else if(input.includes("debug"))
+response="Debugging is the process of finding and fixing errors in a program.";
+
+else if(input.includes("error"))
+response="Errors can be syntax errors, runtime errors, or logical errors.";
+
+else if(input.includes("string"))
+response="A string is a sequence of characters used to store text.";
+
+else if(input.includes("class"))
+response="A class is a blueprint for creating objects in object-oriented programming.";
+
+else if(input.includes("object"))
+response="An object is an instance of a class containing data and methods.";
+
+else if(input.includes("html"))
+response="HTML is used to structure content on web pages.";
+
+else if(input.includes("css"))
+response="CSS is used to style and design web pages.";
+
+else if(input.includes("javascript"))
+response="JavaScript adds interactivity and dynamic behavior to websites.";
+
+else if(input.includes("api"))
+response="An API allows different software applications to communicate with each other.";
+
+else if(input.includes("database"))
+response="A database is used to store, organize, and retrieve data efficiently.";
+  
 else
-response="Ask about semicolons, python, or comparisons.";
+response="Try asking about loops, arrays, functions, variables, HTML, CSS, JavaScript, APIs, databases, Python, Java, or debugging.";
 
 chatBox.innerHTML+="<div style='color:#22c55e;'>AI: "+response+"</div>";
 chatBox.scrollTop=chatBox.scrollHeight;
